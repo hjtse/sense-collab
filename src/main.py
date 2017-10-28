@@ -6,7 +6,7 @@ sense = SenseHat()
 sense.clear()
 
 #Set color values
-r = (255,0,0)
+r = (0,0,255)
 g = (0,255,0)
 b = (0,0,0)
 o = (255, 255, 0)
