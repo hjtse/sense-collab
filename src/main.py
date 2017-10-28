@@ -1,5 +1,6 @@
 from sense_hat import SenseHat
 from time import sleep
+import time
 from random import randint
 
 sense = SenseHat()
@@ -15,21 +16,32 @@ w = (255,255,255)
 
 #Initiate variables
 x = 4
-y = 7
+y = 4
 
 pos = 2
-time = 0
 limit = 10
 
 #Basic start screen
-maze = [[g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g]]
+target = [(7,7),(1,1)]
+
+
+maze = [[b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b]]
+
+# maze = [[g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g],
+#         [g,g,g,b,b,b,g,g]]
 
 #Animations for crash
 explode1 = [[w,w,w,r,w,w,w,w],
@@ -128,20 +140,36 @@ def add_turn(pos, maze):
     return pos,maze
 
 
+targettime = None
 
 while True:
     pitch = sense.get_orientation()['pitch']
     roll = sense.get_orientation()['roll']
     x,y = move_marble(pitch, roll, x, y)
-    #limit determines speed - starts at 10 and moves down every 100 cycles
-    if time % limit == 0:
-        pos,maze = add_turn(pos, maze)
-    if time % 100 == 0:
-        limit = max (1, limit - 1)
-    x,y = check_lose(x, y)
+    for targetx,targety in target:
+        maze[targetx][targety]=r
+    if x==targetx and y==targety:
+        currenttime = time.time()
+        if targettime is None:
+            targettime = 1000+currenttime
+        else:
+            print targettime-currenttime
+            if currenttime >= targettime:
+                maze[y][x] = b
+                targettime = None
+                
+    else:
+        targettime = None
+    print x,y
     maze[y][x] = w
     sense.set_pixels(sum(maze,[]))
     sleep(0.05)
-    time += 1
     #clear previous player location
     maze[y][x] = b
+    #limit determines speed - starts at 10 and moves down every 100 cycles
+    # if time % limit == 0:
+    #     pos,maze = add_turn(pos, maze)
+    # if time % 100 == 0:
+    #     limit = max (1, limit - 1)
+    # x,y = check_lose(x, y)
+    
