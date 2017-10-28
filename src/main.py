@@ -21,14 +21,16 @@ time = 0
 limit = 10
 
 #Basic start screen
-maze = [[g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g],
-        [g,g,g,b,b,b,g,g]]
+init_maze = [[b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b],
+        [b,b,b,b,b,b,b,b]]
+
+maze = init_maze
 
 #Animations for crash
 explode1 = [[w,w,w,r,w,w,w,w],
@@ -133,14 +135,14 @@ while True:
     roll = sense.get_orientation()['roll']
     x,y = move_marble(pitch, roll, x, y)
     #limit determines speed - starts at 10 and moves down every 100 cycles
-    if time % limit == 0:
-        pos,maze = add_turn(pos, maze)
-    if time % 100 == 0:
-        limit = max (1, limit - 1)
-    x,y = check_lose(x, y)
-    maze[y][x] = w
-    sense.set_pixels(sum(maze,[]))
-    sleep(0.05)
+    # if time % limit == 0:
+    #     pos,maze = add_turn(pos, maze)
+    # if time % 100 == 0:
+    #     limit = max (1, limit - 1)
+    # x,y = check_lose(x, y)
+    maze[y][x] = b
+    # sense.set_pixels(sum(maze,[]))
+    sleep(0.10)
     time += 1
     #clear previous player location
-    maze[y][x] = b
+    maze[y][x] = w
