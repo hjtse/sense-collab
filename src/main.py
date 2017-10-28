@@ -99,14 +99,7 @@ def reset(x, y):
     pos = 2
     time = 0
     limit = 10
-    maze = [[g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g],
-            [g,g,g,b,b,b,g,g]]
+    maze = init_maze 
     return x,y
 
 def add_turn(pos, maze): 
@@ -135,15 +128,17 @@ while True:
     pitch = sense.get_orientation()['pitch']
     roll = sense.get_orientation()['roll']
     x,y = move_marble(pitch, roll, x, y)
+
+    print x,y
     #limit determines speed - starts at 10 and moves down every 100 cycles
     # if time % limit == 0:
     #     pos,maze = add_turn(pos, maze)
     # if time % 100 == 0:
     #     limit = max (1, limit - 1)
     # x,y = check_lose(x, y)
-    maze[y][x] = b
-    # sense.set_pixels(sum(maze,[]))
+    maze[y][x] = w
+    sense.set_pixels(sum(maze,[]))
     sleep(0.10)
     time += 1
     #clear previous player location
-    maze[y][x] = w
+    maze[y][x] = b
